@@ -571,7 +571,7 @@
           <div class="stat-sub" data-i18n="stat1Sub">System &amp; Test Engineer</div>
         </div>
         <div class="stat-card">
-          <div class="stat-title" data-i18n="stat2Title">8 Vitrin Projesi</div>
+          <div class="stat-title" data-i18n="stat2Title">9 Vitrin Projesi</div>
           <div class="stat-sub" data-i18n="stat2Sub">QA, Yapay Zekâ &amp; Full-Stack</div>
         </div>
         <div class="stat-card">
@@ -747,7 +747,7 @@
         heroDesc: "Ankara Üniversitesi Bilgisayar Mühendisliği mezunuyum. Doğrulama & Geçerleme (V&V), Test Otomasyonu, Bilgisayarlı Görü ve Yapay Zekâ alanlarında güvenilir ve ölçeklenebilir sistemler geliştiriyorum.",
         heroProjectsBtn: "Projeleri İncele",
         stat1Sub: "System & Test Engineer",
-        stat2Title: "8 Vitrin Projesi", stat2Sub: "QA, Yapay Zekâ & Full-Stack",
+        stat2Title: "9 Vitrin Projesi", stat2Sub: "QA, Yapay Zekâ & Full-Stack",
         stat3Title: "Ankara Üniversitesi", stat3Sub: "Bilgisayar Mühendisliği",
         focusKicker: "Uzmanlık", focusTitle: "Odak Alanları",
         f1Title: "Doğrulama & Geçerleme ve Test",
@@ -761,7 +761,7 @@
         projKicker: "Portföy", projTitle: "Öne Çıkan Projeler",
         searchPlaceholder: "Proje veya teknoloji ara...",
         catAll: "Tümü", catQa: "QA & Otomasyon", catAi: "Yapay Zekâ & CV", catFull: "Full-Stack & API",
-        ciPassing: "CI Başarılı", detailsBtn: "Detaylar", viewGithub: "GitHub'da İncele",
+        ciPassing: "CI Başarılı", detailsBtn: "Detaylar", demoBtn: "Canlı Demo ↗", viewGithub: "GitHub'da İncele",
         emptyState: "Aramanızla eşleşen proje bulunamadı.",
         techKicker: "Yetkinlikler", techTitle: "Teknik Yığın", techDevops: "DevOps & Sistem",
         contactKicker: "Bağlantı", contactTitle: "İletişim",
@@ -776,7 +776,7 @@
         heroDesc: "Computer Engineering graduate from Ankara University. I build reliable, scalable systems across Verification & Validation (V&V), Test Automation, Computer Vision, and Artificial Intelligence.",
         heroProjectsBtn: "Explore Projects",
         stat1Sub: "System & Test Engineer",
-        stat2Title: "8 Showcase Projects", stat2Sub: "QA, AI & Full-Stack",
+        stat2Title: "9 Showcase Projects", stat2Sub: "QA, AI & Full-Stack",
         stat3Title: "Ankara University", stat3Sub: "Computer Engineering",
         focusKicker: "Expertise", focusTitle: "Focus Areas",
         f1Title: "Verification, Validation & Testing",
@@ -790,7 +790,7 @@
         projKicker: "Portfolio", projTitle: "Featured Projects",
         searchPlaceholder: "Search project or technology...",
         catAll: "All", catQa: "QA & Automation", catAi: "AI & CV", catFull: "Full-Stack & API",
-        ciPassing: "CI Passing", detailsBtn: "Details", viewGithub: "View on GitHub",
+        ciPassing: "CI Passing", detailsBtn: "Details", demoBtn: "Live Demo ↗", viewGithub: "View on GitHub",
         emptyState: "No projects matched your search.",
         techKicker: "Capabilities", techTitle: "Tech Stack", techDevops: "DevOps & Systems",
         contactKicker: "Connect", contactTitle: "Contact",
@@ -985,7 +985,9 @@
             "Responsive layout tailored for mobile and desktop screens"
           ]
         }
-      }
+      },
+      { name: "adimplan-edtech-saas", category: "fullstack", tags: ["Supabase RLS", "FastAPI", "Python", "Docker", "CI/CD"], demoUrl: "./adimplan/", tr: { cat: "Full-Stack & API", desc: "Çok-kiracılı YKS/LGS eğitim koçluğu SaaS platformu; 6 modüllü canlı MVP (haftalık program, ısı haritası, Leitner yanlış kasası, RSVP hızlı okuma, optik CSV aktarım), Supabase RLS ve FastAPI backend.", highlights: ["Supabase RLS ile çok-kiracılı güvenli veri izolasyonu", "Haftalık program, ısı haritası, Leitner yanlış kasası, RSVP hızlı okuma ve optik CSV aktarım modülleri", "FastAPI backend, Docker konteynerizasyonu ve CI/CD hattı"] },
+       en: { cat: "Full-Stack & API", desc: "Multi-tenant EdTech coaching SaaS featuring a 6-module live MVP (weekly schedule, topic heatmap, Leitner vault, RSVP reader, optical CSV import), Supabase RLS, and FastAPI backend.", highlights: ["Multi-tenant secure data isolation powered by Supabase RLS", "6-module live MVP: weekly schedule, topic heatmap, Leitner vault, RSVP reader, and optical CSV import", "FastAPI backend, Docker containerization, and CI/CD pipeline"] } }
     ];
 
     let currentLang = localStorage.getItem("portfolio_lang") || "tr";
@@ -1060,7 +1062,7 @@
             </div>
             <div class="card-actions">
               <button class="card-btn" type="button" data-open="${p.name}">${dict.detailsBtn}</button>
-              <a class="card-btn" href="${repoUrl}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+              ${p.demoUrl ? `<a class="card-btn" href="${p.demoUrl}" target="_blank" rel="noopener noreferrer">${dict.demoBtn}</a>` : ""}<a class="card-btn" href="${repoUrl}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             </div>
           </article>
         `;

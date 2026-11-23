@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdımPlan | YKS Koçluk & Öğrenci Takip MVP</title>
+<style>
+:root{--bg:#f4f7fb;--card:#ffffff;--ink:#0f172a;--muted:#64748b;--border:#e2e8f0;--primary:#2563eb;--primary-soft:#eff6ff;--red:#ef4444;--red-bg:#fef2f2;--yellow:#f59e0b;--yellow-bg:#fffbeb;--green:#10b981;--green-bg:#ecfdf5;--radius:14px;--shadow:0 4px 20px rgba(15,23,42,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:20px}
+.container{max-width:1240px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;background:var(--card);padding:18px 24px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+.brand h1{font-size:20px;font-weight:700}
+.brand p{font-size:13px;color:var(--muted)}
+.role-switch{display:inline-flex;background:var(--bg);padding:4px;border-radius:10px;border:1px solid var(--border)}
+.role-btn{border:none;background:transparent;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:.2s}
+.role-btn.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.25)}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px}
+.kpi-card{background:var(--card);padding:18px 20px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+.kpi-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.kpi-val{font-size:28px;font-weight:800;margin:6px 0 4px;color:var(--ink)}
+.kpi-sub{font-size:12px;color:var(--muted)}
+.main-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:20px}
+@media(max-width:920px){.main-grid{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:20px}
+.card{background:var(--card);padding:20px 22px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.card-title{font-size:16px;font-weight:700}
+.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--primary-soft);color:var(--primary)}
+.day-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.day-btn{border:1px solid var(--border);background:var(--bg);color:var(--ink);padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.day-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.form-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+input,select{padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:2px solid #bfdbfe;border-color:var(--primary)}
+.btn{border:none;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-ghost{background:var(--bg);color:var(--ink);border:1px solid var(--border)}
+.btn-danger{background:var(--red-bg);color:var(--red)}
+.btn-sm{padding:5px 9px;font-size:12px}
+.task-list{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto}
+.task-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.task-item.done{opacity:.65;background:var(--bg)}
+.task-left{display:flex;align-items:center;gap:10px;min-width:0}
+.task-left input[type="checkbox"]{width:17px;height:17px;cursor:pointer;accent-color:var(--primary)}
+.task-day{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--primary-soft);color:var(--primary);white-space:nowrap}
+.task-text{font-size:13.5px;font-weight:600;word-break:break-word}
+.task-item.done .task-text{text-decoration:line-through;color:var(--muted)}
+.task-actions{display:flex;gap:5px;flex-shrink:0}
+.heat-list{display:flex;flex-direction:column;gap:12px}
+.heat-item{display:flex;flex-direction:column;gap:5px}
+.heat-meta{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
+.bar-track{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:999px;transition:width .35s ease}
+.fill-red{background:var(--red)}
+.fill-yellow{background:var(--yellow)}
+.fill-green{background:var(--green)}
+.pomo-box{text-align:center;padding:8px 0}
+.pomo-time{font-size:44px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums;margin:6px 0 14px;color:var(--ink)}
+.pomo-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.advice-box{margin-top:14px;padding:13px 15px;border-radius:10px;background:var(--primary-soft);border-left:4px solid var(--primary);font-size:13px}
+.advice-box strong{display:block;margin-bottom:4px;color:#1e40af}
+.hidden{display:none!important}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:20px 0}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="brand">
+      <div class="logo">AP</div>
+      <div>
+        <h1>AdımPlan YKS Koçluk</h1>
+        <p>Öğrenci Takip, Isı Haritası &amp; Odak Yönetimi MVP</p>
+      </div>
+    </div>
+    <div class="role-switch" role="group" aria-label="Panel Seçimi">
+      <button id="btnCoach" class="role-btn active" onclick="setRole('coach')">Koç Paneli</button>
+      <button id="btnStudent" class="role-btn" onclick="setRole('student')">Öğrenci Paneli</button>
+    </div>
+  </header>
+
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Aktif Öğrenci</div>
+      <div class="kpi-val" id="kpiStudents">18</div>
+      <div class="kpi-sub" id="kpiStudentsSub">Koçluk portföyü aktif</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Haftalık Görev Tamamlama</div>
+      <div class="kpi-val" id="kpiCompletion">%0</div>
+      <div class="kpi-sub" id="kpiCompletionSub">0 / 0 görev tamamlandı</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Son TYT Neti</div>
+      <div class="kpi-val" id="kpiNet">84.50</div>
+      <div class="kpi-sub" id="kpiNetSub">Son deneme kaydına göre</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Odak Serisi</div>
+      <div class="kpi-val" id="kpiFocus">125 dk</div>
+      <div class="kpi-sub" id="kpiFocusSub">Toplam Pomodoro süresi</div>
+    </div>
+  </section>
+
+  <main class="main-grid">
+    <div class="stack">
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">Haftalık Çalışma Programı</h2>
+          <span class="badge" id="scheduleModeBadge">Koç Düzenleme Modu</span>
+        </div>
+        <div class="day-filters" id="dayFilters"></div>
+        <form id="taskForm" class="form-row" onsubmit="addTask(event)">
+          <select id="taskDay" aria-label="Gün">
+            <option value="Pzt">Pzt</option>
+            <option value="Sal">Sal</option>
+            <option value="Çar">Çar</option>
+            <option value="Per">Per</option>
+            <option value="Cum">Cum</option>
+            <option value="Cmt">Cmt</option>
+            <option value="Paz">Paz</option>
+          </select>
+          <input id="taskTitle" type="text" placeholder="Yeni görev (örn: TYT Problemler 40 soru)" style="flex:1;min-width:200px" required>
+          <button type="submit" class="btn btn-primary">Görev Ekle</button>
+        </form>
+        <div id="taskList" class="task-list"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">Canlı Konu Zayıflık Isı Haritası</h2>
+          <span class="badge">Kırmızı &lt;50% | Sarı 50-74% | Yeşil &ge;75%</span>
+        </div>
+        <div id="heatmapList" class="heat-list"></div>
+      </section>
+    </div>
+
+    <div class="stack">
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">Pomodoro Odak Sayacı</h2>
+          <span class="badge">25 dk Odak</span>
+        </div>
+        <div class="pomo-box">
+          <div class="pomo-time" id="pomoDisplay">25:00</div>
+          <div class="pomo-actions">
+            <button class="btn btn-primary" onclick="startPomo()">Başlat</button>
+            <button class="btn btn-ghost" onclick="pausePomo()">Duraklat</button>
+            <button class="btn btn-ghost" onclick="resetPomo()">Sıfırla</button>
+            <button class="btn btn-primary" style="background:var(--green)" onclick="logPomo25()">+25 dk kaydet</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">Hızlı Deneme Konu Girişi</h2>
+          <span class="badge">Anlık Analiz</span>
+        </div>
+        <form onsubmit="submitTrial(event)">
+          <div class="form-row">
+            <input id="trialTopic" list="topicOptions" placeholder="Konu seçin veya yazın" style="width:100%" required>
+            <datalist id="topicOptions">
+              <option value="TYT Matematik - Problemler">
+              <option value="TYT Türkçe - Paragraf">
+              <option value="TYT Fizik - Optik">
+              <option value="TYT Kimya - Mol Kavramı">
+              <option value="AYT Matematik - Türev">
+            </datalist>
+          </div>
+          <div class="form-row">
+            <input id="trialD" type="number" min="0" max="120" placeholder="Doğru (D)" style="flex:1;min-width:80px" required>
+            <input id="trialY" type="number" min="0" max="120" placeholder="Yanlış (Y)" style="flex:1;min-width:80px" required>
+            <input id="trialB" type="number" min="0" max="120" placeholder="Boş (B)" style="flex:1;min-width:80px" required>
+            <button type="submit" class="btn btn-primary">Kaydet &amp; Güncelle</button>
+          </div>
+        </form>
+        <div class="advice-box" id="adviceBox">
+          <strong>Otomatik Koç Önerisi</strong>
+          <span id="adviceText">TYT Fizik - Optik konusunda hakimiyet %33 ile kritik bölgede. Hemen 2 Pomodoro bloğunu temel soru çözümüne ayırın.</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY = 'adimplan_yks_mvp_v1';
+const DAYS = ['Tümü', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+
+const defaultState = {
+  role: 'coach',
+  selectedDay: 'Tümü',
+  activeStudents: 18,
+  lastNet: 84.5,
+  focusMinutes: 125,
+  tasks: [
+    { id: 1, day: 'Pzt', title: 'TYT Türkçe Paragraf (30 Soru Süreli)', done: true },
+    { id: 2, day: 'Pzt', title: 'TYT Matematik Problemler Tekrar + 25 Soru', done: false },
+    { id: 3, day: 'Sal', title: 'TYT Fizik Optik Konu Özeti & Video', done: false },
+    { id: 4, day: 'Çar', title: 'AYT Matematik Türev Karma Test', done: true },
+    { id: 5, day: 'Per', title: 'TYT Kimya Mol Kavramı Soru Çözümü', done: false },
+    { id: 6, day: 'Cum', title: 'Genel TYT Deneme Sınavı + Analiz', done: false }
+  ],
+  topics: [
+    { name: 'TYT Türkçe - Paragraf', d: 26, y: 3, b: 1, mastery: 84 },
+    { name: 'AYT Matematik - Türev', d: 11, y: 2, b: 2, mastery: 70 },
+    { name: 'TYT Matematik - Problemler', d: 9, y: 4, b: 2, mastery: 53 },
+    { name: 'TYT Fizik - Optik', d: 4, y: 3, b: 3, mastery: 33 }
+  ],
+  advice: 'TYT Fizik - Optik konusunda hakimiyet %33 ile kritik bölgede. Hemen 2 Pomodoro bloğunu temel soru çözümüne ayırın.'
+};
+
+let state = loadState();
+let pomoSeconds = 1500;
+let pomoTimer = null;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return JSON.parse(JSON.stringify(defaultState));
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function setRole(role) {
+  state.role = role;
+  saveState();
+  render();
+}
+
+function filterDay(day) {
+  state.selectedDay = day;
+  saveState();
+  renderTasks();
+  renderDays();
+}
+
+function addTask(e) {
+  e.preventDefault();
+  const day = document.getElementById('taskDay').value;
+  const input = document.getElementById('taskTitle');
+  const title = input.value.trim();
+  if (!title) return;
+  state.tasks.push({ id: Date.now(), day, title, done: false });
+  input.value = '';
+  saveState();
+  render();
+}
+
+function toggleTask(id) {
+  const t = state.tasks.find(x => x.id === id);
+  if (t) t.done = !t.done;
+  saveState();
+  render();
+}
+
+function moveTaskUp(id) {
+  const idx = state.tasks.findIndex(x => x.id === id);
+  if (idx <= 0) return;
+  let targetIdx = idx - 1;
+  if (state.selectedDay !== 'Tümü') {
+    targetIdx = -1;
+    for (let i = idx - 1; i >= 0; i--) {
+      if (state.tasks[i].day === state.selectedDay) { targetIdx = i; break; }
+    }
+    if (targetIdx === -1) return;
+  }
+  const tmp = state.tasks[targetIdx];
+  state.tasks[targetIdx] = state.tasks[idx];
+  state.tasks[idx] = tmp;
+  saveState();
+  renderTasks();
+}
+
+function deleteTask(id) {
+  state.tasks = state.tasks.filter(x => x.id !== id);
+  saveState();
+  render();
+}
+
+function submitTrial(e) {
+  e.preventDefault();
+  const name = document.getElementById('trialTopic').value.trim();
+  const d = parseInt(document.getElementById('trialD').value, 10) || 0;
+  const y = parseInt(document.getElementById('trialY').value, 10) || 0;
+  const b = parseInt(document.getElementById('trialB').value, 10) || 0;
+  const total = d + y + b;
+  if (!name || total <= 0) return;
+
+  const net = +(d - y * 0.25).toFixed(2);
+  const mastery = Math.max(0, Math.min(100, Math.round((net / total) * 100)));
+
+  const existing = state.topics.find(t => t.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    existing.d = d; existing.y = y; existing.b = b; existing.mastery = mastery;
+  } else {
+    state.topics.unshift({ name, d, y, b, mastery });
+  }
+
+  state.lastNet = +(Math.max(0, 75 + (net * 0.6))).toFixed(2);
+  const weakest = [...state.topics].sort((a, b) => a.mastery - b.mastery)[0];
+
+  if (mastery < 50) {
+    state.advice = `${name} (%${mastery} hakimiyet, ${net} net) kritik seviyede! Yanlış analizi yapıp bu hafta en az 2 Pomodoro tekrar ekleyin.`;
+  } else if (mastery < 75) {
+    state.advice = `${name} (%${mastery} hakimiyet) gelişim aşamasında. Hızlanmak için süreli test çözün. En zayıf konu: ${weakest.name} (%${weakest.mastery}).`;
+  } else {
+    state.advice = `Harika! ${name} (%${mastery} hakimiyet) güçlü bölgede. Şimdi odağı en zayıf konunuz olan ${weakest.name} (%${weakest.mastery}) üzerine kaydırın.`;
+  }
+
+  e.target.reset();
+  saveState();
+  render();
+}
+
+function renderPomo() {
+  const m = String(Math.floor(pomoSeconds / 60)).padStart(2, '0');
+  const s = String(pomoSeconds % 60).padStart(2, '0');
+  document.getElementById('pomoDisplay').textContent = `${m}:${s}`;
+}
+
+function startPomo() {
+  if (pomoTimer) return;
+  pomoTimer = setInterval(() => {
+    if (pomoSeconds > 0) {
+      pomoSeconds--;
+      renderPomo();
+    } else {
+      pausePomo();
+      logPomo25();
+      resetPomo();
+    }
+  }, 1000);
+}
+
+function pausePomo() {
+  clearInterval(pomoTimer);
+  pomoTimer = null;
+}
+
+function resetPomo() {
+  pausePomo();
+  pomoSeconds = 1500;
+  renderPomo();
+}
+
+function logPomo25() {
+  state.focusMinutes += 25;
+  saveState();
+  renderKPIs();
+}
+
+function renderKPIs() {
+  const isCoach = state.role === 'coach';
+  document.getElementById('kpiStudents').textContent = isCoach ? state.activeStudents : '1';
+  document.getElementById('kpiStudentsSub').textContent = isCoach ? 'Koçluk portföyü aktif' : 'Bireysel öğrenci görünümü';
+
+  const total = state.tasks.length;
+  const done = state.tasks.filter(t => t.done).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('kpiCompletion').textContent = `%${pct}`;
+  document.getElementById('kpiCompletionSub').textContent = `${done} / ${total} görev tamamlandı`;
+
+  document.getElementById('kpiNet').textContent = Number(state.lastNet).toFixed(2);
+  document.getElementById('kpiFocus').textContent = `${state.focusMinutes} dk`;
+}
+
+function renderDays() {
+  const container = document.getElementById('dayFilters');
+  container.innerHTML = DAYS.map(d =>
+    `<button class="day-btn ${state.selectedDay === d ? 'active' : ''}" onclick="filterDay('${d}')">${d}</button>`
+  ).join('');
+}
+
+function renderTasks() {
+  const isCoach = state.role === 'coach';
+  document.getElementById('taskForm').classList.toggle('hidden', !isCoach);
+  document.getElementById('scheduleModeBadge').textContent = isCoach ? 'Koç Düzenleme Modu' : 'Öğrenci Takip Modu';
+
+  const list = document.getElementById('taskList');
+  const filtered = state.selectedDay === 'Tümü'
+    ? state.tasks
+    : state.tasks.filter(t => t.day === state.selectedDay);
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="empty">Seçili gün için görev bulunmuyor.</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(t => `
+    <div class="task-item ${t.done ? 'done' : ''}">
+      <div class="task-left">
+        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${t.id})">
+        <span class="task-day">${t.day}</span>
+        <span class="task-text">${escapeHtml(t.title)}</span>
+      </div>
+      ${isCoach ? `
+      <div class="task-actions">
+        <button class="btn btn-ghost btn-sm" title="Yukarı taşı" onclick="moveTaskUp(${t.id})">&#8593;</button>
+        <button class="btn btn-danger btn-sm" title="Sil" onclick="deleteTask(${t.id})">Sil</button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderHeatmap() {
+  const list = document.getElementById('heatmapList');
+  const sorted = [...state.topics].sort((a, b) => a.mastery - b.mastery);
+  list.innerHTML = sorted.map(t => {
+    const cls = t.mastery < 50 ? 'fill-red' : (t.mastery < 75 ? 'fill-yellow' : 'fill-green');
+    return `
+      <div class="heat-item">
+        <div class="heat-meta">
+          <span>${escapeHtml(t.name)}</span>
+          <span>%${t.mastery} (${t.d}D ${t.y}Y ${t.b}B)</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill ${cls}" style="width:${t.mastery}%"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
+
+function render() {
+  document.getElementById('btnCoach').classList.toggle('active', state.role === 'coach');
+  document.getElementById('btnStudent').classList.toggle('active', state.role === 'student');
+  document.getElementById('adviceText').textContent = state.advice;
+  renderKPIs();
+  renderDays();
+  renderTasks();
+  renderHeatmap();
+  renderPomo();
+}
+
+render();
+</script>
+</body>
+</html>

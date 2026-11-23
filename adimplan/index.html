@@ -82,7 +82,7 @@ button:hover{background:#f8fafc}
     </div>
     <div class="top-controls no-print">
       <select id="studentSelect" aria-label="Öğrenci Seç"></select>
-      <button onclick="openStudentModal()">+ Yeni Öğrenci</button>
+      <button onclick="openStudentModal()">+ Yeni Öğrenci</button> <button onclick="exportBackup()">Yedekle (JSON)</button><button onclick="document.getElementById('backupFileInput').click()">Yedek Yükle</button><input type="file" id="backupFileInput" accept=".json,application/json" style="display:none" onchange="importBackup(event)" />
       <span id="riskBadge" class="risk-badge risk-Normal">Normal</span>
       <div class="role-switch">
         <button id="roleKoc" class="role-btn active" onclick="setRole('Koç')">Koç</button>
@@ -127,7 +127,7 @@ button:hover{background:#f8fafc}
             <button onclick="setRisk('Orta Risk')">Orta Risk</button>
             <button onclick="setRisk('Yüksek Risk')">Yüksek Risk</button>
           </div>
-        </div>
+        </div> <div class="card no-print"><div class="card-head"><h2 class="card-title">Günlük Mood / Kaygı &amp; Çalışma Serisi</h2></div><div id="moodButtons" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="font-size:13px">Çalışma Serisi (Streak): <strong id="streakVal">0 gün</strong></span><div style="display:flex;gap:6px"><button onclick="changeStreak(-1)">-1</button><button class="btn-primary" onclick="changeStreak(1)">+1 Gün</button></div></div></div>
         <div class="card">
           <div class="card-head"><h2 class="card-title">Otomatik Yapay Zekâ Koç Önerisi</h2></div>
           <div id="aiAdvice" class="ai-box"></div>
@@ -268,7 +268,7 @@ const defaultData = {
   activeId: 'zeynep',
   role: 'Koç',
   students: [
-    {
+    { streak: 5, mood: 'İyi',
       id: 'zeynep', name: 'Zeynep Kaya', goal: 'Sayısal - İlk 15K', risk: 'Normal', pomoMins: 125,
       tasks: [
         {id:1, title:'TYT Matematik - Problemler 40 Soru', day:'Pzt', meta:'60 dk', done:true},
@@ -295,7 +295,7 @@ const defaultData = {
         {sender:'Öğrenci', text:'Tamam hocam, akşam 2 Pomodoro Optik çalışacağım.', time:'10:15'}
       ]
     },
-    {
+    { streak: 2, mood: 'Kaygılı',
       id: 'mert', name: 'Mert Aydın', goal: 'EA - İlk 20K', risk: 'Orta Risk', pomoMins: 75,
       tasks: [
         {id:1, title:'TYT Türkçe - Dil Bilgisi Kampı', day:'Pzt', meta:'50 dk', done:false},
@@ -326,7 +326,7 @@ let pomoSec = 1500, pomoTimer = null, rsvpTimer = null, rsvpIdx = 0, wpm = 300;
 
 function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 function cur(){ return state.students.find(s => s.id === state.activeId) || state.students[0]; }
-
+const MOODS=['Harika','İyi','Orta','Kaygılı','Yorgun']; function ensureStudent(s){if(s){if(typeof s.streak!=='number'||isNaN(s.streak))s.streak=0;if(!MOODS.includes(s.mood))s.mood='İyi';}return s;} function renderMoodCard(){const s=ensureStudent(cur());const box=document.getElementById('moodButtons');if(box){box.innerHTML=MOODS.map(m=>`<button class="${s.mood===m?'btn-primary':''}" onclick="setMood('${m}')">${m}</button>`).join('');}const sv=document.getElementById('streakVal');if(sv)sv.textContent=(s.streak||0)+' gün';} function setMood(m){const s=ensureStudent(cur());s.mood=m;save();renderAll();} function changeStreak(d){const s=ensureStudent(cur());s.streak=Math.max(0,(Number(s.streak)||0)+d);save();renderAll();} function exportBackup(){save();const p={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i),v=localStorage.getItem(k);try{p[k]=JSON.parse(v);}catch(e){p[k]=v;}}const b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='adimplan-yedek.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);} function importBackup(e){const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const p=JSON.parse(ev.target.result);if(!p||typeof p!=='object'||Array.isArray(p))throw new Error('Geçersiz yedek dosyası.');if(Array.isArray(p.students)&&p.activeId){localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}else{const ks=Object.keys(p);if(!ks.length)throw new Error('Yedek dosyası boş.');ks.forEach(k=>{const v=p[k];localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));});}state=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')||defaultData;if(!state.students||!state.students.length)state=defaultData;state.students.forEach(ensureStudent);cardIdx=0;showAnswer=false;renderAll();alert('Yedek başarıyla geri yüklendi.');}catch(err){alert('Yedek yüklenemedi: '+(err.message||'Geçersiz JSON.'));}finally{e.target.value='';}};r.readAsText(f,'UTF-8');}
 function renderAll(){
   const sel = document.getElementById('studentSelect');
   sel.innerHTML = state.students.map(s => `<option value="${s.id}" ${s.id===cur().id?'selected':''}>${s.name} (${s.goal})</option>`).join('');
@@ -337,7 +337,7 @@ function renderAll(){
   badge.className = 'risk-badge ' + (s.risk==='Normal'?'risk-Normal':s.risk==='Orta Risk'?'risk-Orta':'risk-Yuksek');
   document.getElementById('roleKoc').classList.toggle('active', state.role==='Koç');
   document.getElementById('roleOgr').classList.toggle('active', state.role==='Öğrenci');
-  renderProgram(); renderExams(); renderLeitner(); renderPomo(); renderReport(); renderChat();
+  renderProgram(); renderExams(); renderLeitner(); renderPomo(); renderReport(); renderChat(); renderMoodCard();
 }
 
 function setRole(r){ state.role = r; save(); renderAll(); }
@@ -538,7 +538,7 @@ Risk Durumu: ${s.risk}
 Haftalık Görev Tamamlama: ${done}/${total} (%${total?Math.round(done/total*100):0})
 Toplam Pomodoro Odak Süresi: ${s.pomoMins} dk
 Son Deneme Neti: ${lastExam ? lastExam.name + ' - ' + lastExam.net + ' net' : 'Henüz girilmedi'}
-Öncelikli Destek Konusu: ${weak ? weak.topic + ' (%' + weak.pct + ')' : 'Belirlenmedi'}
+Öncelikli Destek Konusu: ${weak ? weak.topic + ' (%' + weak.pct + ')' : 'Belirlenmedi'}\nÇalışma Serisi (Streak): ${s.streak||0} gün | Günlük Mood/Kaygı: ${s.mood||'İyi'}
 Yanlış Kasası Kutu 1 Kart Sayısı: ${s.cards.filter(c=>c.box===1).length} adet`;
 }
 function copyReport(){

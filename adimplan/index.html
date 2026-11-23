@@ -3,450 +3,563 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AdımPlan | YKS Koçluk & Öğrenci Takip MVP</title>
+<title>AdımPlan V2 | Akıllı YKS Koçluk & Öğrenci Takip</title>
 <style>
-:root{--bg:#f4f7fb;--card:#ffffff;--ink:#0f172a;--muted:#64748b;--border:#e2e8f0;--primary:#2563eb;--primary-soft:#eff6ff;--red:#ef4444;--red-bg:#fef2f2;--yellow:#f59e0b;--yellow-bg:#fffbeb;--green:#10b981;--green-bg:#ecfdf5;--radius:14px;--shadow:0 4px 20px rgba(15,23,42,.06)}
+:root{--bg:#f4f7fb;--card:#ffffff;--ink:#0f172a;--muted:#64748b;--border:#e2e8f0;--primary:#2563eb;--primary-soft:#eff6ff;--success:#16a34a;--success-soft:#dcfce7;--warn:#d97706;--warn-soft:#fef3c7;--danger:#dc2626;--danger-soft:#fee2e2;--radius:14px;--shadow:0 4px 18px rgba(15,23,42,.06)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:20px}
-.container{max-width:1240px;margin:0 auto}
-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;background:var(--card);padding:18px 24px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:18px}
+.container{max-width:1260px;margin:0 auto}
+.topbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;background:var(--card);padding:16px 20px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:16px}
 .brand{display:flex;align-items:center;gap:12px}
 .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
-.brand h1{font-size:20px;font-weight:700}
-.brand p{font-size:13px;color:var(--muted)}
-.role-switch{display:inline-flex;background:var(--bg);padding:4px;border-radius:10px;border:1px solid var(--border)}
-.role-btn{border:none;background:transparent;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:.2s}
-.role-btn.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.25)}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px}
-.kpi-card{background:var(--card);padding:18px 20px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
-.kpi-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
-.kpi-val{font-size:28px;font-weight:800;margin:6px 0 4px;color:var(--ink)}
-.kpi-sub{font-size:12px;color:var(--muted)}
-.main-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:20px}
-@media(max-width:920px){.main-grid{grid-template-columns:1fr}}
-.stack{display:flex;flex-direction:column;gap:20px}
-.card{background:var(--card);padding:20px 22px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+.brand h1{font-size:19px;font-weight:700}
+.brand p{font-size:12px;color:var(--muted)}
+.top-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+select,input,textarea{font:inherit;border:1px solid var(--border);border-radius:9px;padding:8px 11px;background:#fff;color:var(--ink)}
+button{font:inherit;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--ink);border-radius:9px;padding:8px 13px;font-weight:600;transition:.15s}
+button:hover{background:#f8fafc}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-primary:hover{background:#1d4ed8}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{color:var(--danger);border-color:#fecaca;background:#fff}
+.btn-danger:hover{background:var(--danger-soft)}
+.risk-badge{padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700}
+.risk-Normal{background:var(--success-soft);color:var(--success)}
+.risk-Orta{background:var(--warn-soft);color:var(--warn)}
+.risk-Yuksek{background:var(--danger-soft);color:var(--danger)}
+.role-switch{display:inline-flex;background:var(--bg);padding:3px;border-radius:10px;border:1px solid var(--border)}
+.role-btn{border:none;background:transparent;padding:6px 12px;border-radius:8px;font-size:13px;color:var(--muted)}
+.role-btn.active{background:var(--primary);color:#fff}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tab-btn{padding:10px 16px;border-radius:11px;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:14px}
+.tab-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.grid-2{display:grid;grid-template-columns:1.35fr 1fr;gap:18px}
+@media(max-width:920px){.grid-2{grid-template-columns:1fr}}
+.card{background:var(--card);padding:20px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:16px}
 .card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
 .card-title{font-size:16px;font-weight:700}
-.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--primary-soft);color:var(--primary)}
 .day-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.day-btn{border:1px solid var(--border);background:var(--bg);color:var(--ink);padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
-.day-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-.form-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-input,select{padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff;color:var(--ink)}
-input:focus,select:focus{outline:2px solid #bfdbfe;border-color:var(--primary)}
-.btn{border:none;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:#1d4ed8}
-.btn-ghost{background:var(--bg);color:var(--ink);border:1px solid var(--border)}
-.btn-danger{background:var(--red-bg);color:var(--red)}
-.btn-sm{padding:5px 9px;font-size:12px}
-.task-list{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto}
-.task-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}
-.task-item.done{opacity:.65;background:var(--bg)}
-.task-left{display:flex;align-items:center;gap:10px;min-width:0}
-.task-left input[type="checkbox"]{width:17px;height:17px;cursor:pointer;accent-color:var(--primary)}
-.task-day{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--primary-soft);color:var(--primary);white-space:nowrap}
-.task-text{font-size:13.5px;font-weight:600;word-break:break-word}
-.task-item.done .task-text{text-decoration:line-through;color:var(--muted)}
-.task-actions{display:flex;gap:5px;flex-shrink:0}
-.heat-list{display:flex;flex-direction:column;gap:12px}
-.heat-item{display:flex;flex-direction:column;gap:5px}
-.heat-meta{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
-.bar-track{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
-.bar-fill{height:100%;border-radius:999px;transition:width .35s ease}
-.fill-red{background:var(--red)}
-.fill-yellow{background:var(--yellow)}
-.fill-green{background:var(--green)}
-.pomo-box{text-align:center;padding:8px 0}
-.pomo-time{font-size:44px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums;margin:6px 0 14px;color:var(--ink)}
-.pomo-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
-.advice-box{margin-top:14px;padding:13px 15px;border-radius:10px;background:var(--primary-soft);border-left:4px solid var(--primary);font-size:13px}
-.advice-box strong{display:block;margin-bottom:4px;color:#1e40af}
-.hidden{display:none!important}
-.empty{text-align:center;color:var(--muted);font-size:13px;padding:20px 0}
+.day-btn{padding:5px 11px;font-size:12px;border-radius:8px}
+.day-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.task-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;background:#fff}
+.task-item.done{opacity:.65;background:#f8fafc}
+.task-item.done .task-title{text-decoration:line-through}
+.task-left{display:flex;align-items:center;gap:10px}
+.task-meta{font-size:12px;color:var(--muted)}
+.task-actions{display:flex;gap:5px}
+.form-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.form-row>*{flex:1;min-width:120px}
+.ai-box{background:var(--primary-soft);border:1px solid #bfdbfe;border-radius:12px;padding:14px;font-size:14px;line-height:1.55}
+.heatmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.hm-cell{padding:12px;border-radius:10px;border:1px solid var(--border);font-size:13px}
+.hm-good{background:var(--success-soft);border-color:#86efac}
+.hm-mid{background:var(--warn-soft);border-color:#fde68a}
+.hm-weak{background:var(--danger-soft);border-color:#fca5a5}
+.leitner-box{border:1px solid var(--border);border-radius:12px;padding:18px;background:#f8fafc;margin-bottom:12px}
+.timer-display{font-size:52px;font-weight:800;letter-spacing:2px;text-align:center;margin:14px 0;font-variant-numeric:tabular-nums}
+.rsvp-stage{height:110px;display:grid;place-items:center;background:#0f172a;color:#fff;border-radius:12px;font-size:32px;font-weight:700;margin:12px 0;letter-spacing:.5px}
+.chat-box{max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:12px;background:#f8fafc;margin-bottom:10px}
+.msg{padding:9px 12px;border-radius:10px;margin-bottom:8px;max-width:82%;font-size:13px}
+.msg-Koc{background:var(--primary-soft);border:1px solid #bfdbfe;margin-right:auto}
+.msg-Ogrenci{background:#e2e8f0;margin-left:auto}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);place-items:center;z-index:50}
+.modal-backdrop.open{display:grid}
+.modal{background:#fff;padding:22px;border-radius:14px;width:92%;max-width:400px;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+@media print{.no-print{display:none!important}body{background:#fff;padding:0}.card{box-shadow:none}}
 </style>
 </head>
 <body>
 <div class="container">
-  <header>
+  <header class="topbar">
     <div class="brand">
       <div class="logo">AP</div>
       <div>
-        <h1>AdımPlan YKS Koçluk</h1>
-        <p>Öğrenci Takip, Isı Haritası &amp; Odak Yönetimi MVP</p>
+        <h1>AdımPlan V2</h1>
+        <p>Kişiselleştirilmiş YKS Koçluk &amp; Takip Sistemi</p>
       </div>
     </div>
-    <div class="role-switch" role="group" aria-label="Panel Seçimi">
-      <button id="btnCoach" class="role-btn active" onclick="setRole('coach')">Koç Paneli</button>
-      <button id="btnStudent" class="role-btn" onclick="setRole('student')">Öğrenci Paneli</button>
+    <div class="top-controls no-print">
+      <select id="studentSelect" aria-label="Öğrenci Seç"></select>
+      <button onclick="openStudentModal()">+ Yeni Öğrenci</button>
+      <span id="riskBadge" class="risk-badge risk-Normal">Normal</span>
+      <div class="role-switch">
+        <button id="roleKoc" class="role-btn active" onclick="setRole('Koç')">Koç</button>
+        <button id="roleOgr" class="role-btn" onclick="setRole('Öğrenci')">Öğrenci</button>
+      </div>
     </div>
   </header>
 
-  <section class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-label">Aktif Öğrenci</div>
-      <div class="kpi-val" id="kpiStudents">18</div>
-      <div class="kpi-sub" id="kpiStudentsSub">Koçluk portföyü aktif</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Haftalık Görev Tamamlama</div>
-      <div class="kpi-val" id="kpiCompletion">%0</div>
-      <div class="kpi-sub" id="kpiCompletionSub">0 / 0 görev tamamlandı</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Son TYT Neti</div>
-      <div class="kpi-val" id="kpiNet">84.50</div>
-      <div class="kpi-sub" id="kpiNetSub">Son deneme kaydına göre</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Odak Serisi</div>
-      <div class="kpi-val" id="kpiFocus">125 dk</div>
-      <div class="kpi-sub" id="kpiFocusSub">Toplam Pomodoro süresi</div>
+  <nav class="tabs no-print">
+    <button class="tab-btn active" onclick="switchTab(0)">1. Haftalık Program</button>
+    <button class="tab-btn" onclick="switchTab(1)">2. Deneme &amp; Isı Haritası</button>
+    <button class="tab-btn" onclick="switchTab(2)">3. Yanlış Kasası (Leitner)</button>
+    <button class="tab-btn" onclick="switchTab(3)">4. Pomodoro &amp; Hızlı Okuma</button>
+    <button class="tab-btn" onclick="switchTab(4)">5. Veli Raporu &amp; Mesajlar</button>
+  </nav>
+
+  <section id="tab-0" class="tab-panel active">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Haftalık Çalışma Programı</h2>
+          <button class="no-print" onclick="window.print()">Yazdır / PDF</button>
+        </div>
+        <div id="dayFilters" class="day-filters no-print"></div>
+        <form class="form-row no-print" onsubmit="addTask(event)">
+          <input id="taskTitle" placeholder="Görev / Konu (örn. Türev 40 Soru)" required>
+          <select id="taskDay">
+            <option>Pzt</option><option>Sal</option><option>Çar</option>
+            <option>Per</option><option>Cum</option><option>Cmt</option><option>Paz</option>
+          </select>
+          <input id="taskMeta" placeholder="Süre / Hedef (örn. 45 dk)">
+          <button class="btn-primary" type="submit">Ekle</button>
+        </form>
+        <div id="taskList"></div>
+      </div>
+      <div>
+        <div class="card no-print">
+          <div class="card-head"><h2 class="card-title">Risk Durumu Yönetimi</h2></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button onclick="setRisk('Normal')">Normal</button>
+            <button onclick="setRisk('Orta Risk')">Orta Risk</button>
+            <button onclick="setRisk('Yüksek Risk')">Yüksek Risk</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 class="card-title">Otomatik Yapay Zekâ Koç Önerisi</h2></div>
+          <div id="aiAdvice" class="ai-box"></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <main class="main-grid">
-    <div class="stack">
-      <section class="card">
-        <div class="card-head">
-          <h2 class="card-title">Haftalık Çalışma Programı</h2>
-          <span class="badge" id="scheduleModeBadge">Koç Düzenleme Modu</span>
-        </div>
-        <div class="day-filters" id="dayFilters"></div>
-        <form id="taskForm" class="form-row" onsubmit="addTask(event)">
-          <select id="taskDay" aria-label="Gün">
-            <option value="Pzt">Pzt</option>
-            <option value="Sal">Sal</option>
-            <option value="Çar">Çar</option>
-            <option value="Per">Per</option>
-            <option value="Cum">Cum</option>
-            <option value="Cmt">Cmt</option>
-            <option value="Paz">Paz</option>
-          </select>
-          <input id="taskTitle" type="text" placeholder="Yeni görev (örn: TYT Problemler 40 soru)" style="flex:1;min-width:200px" required>
-          <button type="submit" class="btn btn-primary">Görev Ekle</button>
-        </form>
-        <div id="taskList" class="task-list"></div>
-      </section>
-
-      <section class="card">
-        <div class="card-head">
-          <h2 class="card-title">Canlı Konu Zayıflık Isı Haritası</h2>
-          <span class="badge">Kırmızı &lt;50% | Sarı 50-74% | Yeşil &ge;75%</span>
-        </div>
-        <div id="heatmapList" class="heat-list"></div>
-      </section>
-    </div>
-
-    <div class="stack">
-      <section class="card">
-        <div class="card-head">
-          <h2 class="card-title">Pomodoro Odak Sayacı</h2>
-          <span class="badge">25 dk Odak</span>
-        </div>
-        <div class="pomo-box">
-          <div class="pomo-time" id="pomoDisplay">25:00</div>
-          <div class="pomo-actions">
-            <button class="btn btn-primary" onclick="startPomo()">Başlat</button>
-            <button class="btn btn-ghost" onclick="pausePomo()">Duraklat</button>
-            <button class="btn btn-ghost" onclick="resetPomo()">Sıfırla</button>
-            <button class="btn btn-primary" style="background:var(--green)" onclick="logPomo25()">+25 dk kaydet</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-head">
-          <h2 class="card-title">Hızlı Deneme Konu Girişi</h2>
-          <span class="badge">Anlık Analiz</span>
-        </div>
-        <form onsubmit="submitTrial(event)">
+  <section id="tab-1" class="tab-panel">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h2 class="card-title">Deneme Net Trendi</h2></div>
+        <svg id="trendChart" viewBox="0 0 520 210" style="width:100%;height:auto;background:#f8fafc;border-radius:10px;border:1px solid var(--border)"></svg>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2 class="card-title">Yeni Deneme Ekle</h2></div>
+        <form onsubmit="addExam(event)" style="display:flex;flex-direction:column;gap:10px">
+          <input id="examName" placeholder="Deneme Adı (örn. Özdebir TYT-4)" required>
           <div class="form-row">
-            <input id="trialTopic" list="topicOptions" placeholder="Konu seçin veya yazın" style="width:100%" required>
-            <datalist id="topicOptions">
-              <option value="TYT Matematik - Problemler">
-              <option value="TYT Türkçe - Paragraf">
-              <option value="TYT Fizik - Optik">
-              <option value="TYT Kimya - Mol Kavramı">
-              <option value="AYT Matematik - Türev">
-            </datalist>
+            <input id="examDate" type="date" required>
+            <input id="examNet" type="number" step="0.25" min="0" max="120" placeholder="Toplam Net" required>
           </div>
           <div class="form-row">
-            <input id="trialD" type="number" min="0" max="120" placeholder="Doğru (D)" style="flex:1;min-width:80px" required>
-            <input id="trialY" type="number" min="0" max="120" placeholder="Yanlış (Y)" style="flex:1;min-width:80px" required>
-            <input id="trialB" type="number" min="0" max="120" placeholder="Boş (B)" style="flex:1;min-width:80px" required>
-            <button type="submit" class="btn btn-primary">Kaydet &amp; Güncelle</button>
+            <input id="examTopic" placeholder="Öne Çıkan Konu (örn. Problem)" required>
+            <input id="examMastery" type="number" min="0" max="100" placeholder="Konu Başarı %" required>
           </div>
+          <button class="btn-primary" type="submit">Denemeyi Kaydet</button>
         </form>
-        <div class="advice-box" id="adviceBox">
-          <strong>Otomatik Koç Önerisi</strong>
-          <span id="adviceText">TYT Fizik - Optik konusunda hakimiyet %33 ile kritik bölgede. Hemen 2 Pomodoro bloğunu temel soru çözümüne ayırın.</span>
-        </div>
-      </section>
+      </div>
     </div>
-  </main>
+    <div class="card">
+      <div class="card-head"><h2 class="card-title">Konu Zayıflık Isı Haritası</h2></div>
+      <div id="heatmapGrid" class="heatmap"></div>
+    </div>
+  </section>
+
+  <section id="tab-2" class="tab-panel">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Yanlış Kasası (Kutu 1–5)</h2>
+          <div id="leitnerFilters" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+        </div>
+        <div id="leitnerStage"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2 class="card-title">Yeni Yanlış Kartı Ekle</h2></div>
+        <form onsubmit="addCard(event)" style="display:flex;flex-direction:column;gap:10px">
+          <input id="cardTopic" placeholder="Ders / Konu (örn. Fizik - Optik)" required>
+          <textarea id="cardFront" rows="3" placeholder="Soru / Hata Notu" required></textarea>
+          <textarea id="cardBack" rows="3" placeholder="Doğru Çözüm / İpucu" required></textarea>
+          <button class="btn-primary" type="submit">Kutu 1'e Ekle</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-3" class="tab-panel">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Pomodoro Odak Sayacı (25 dk)</h2>
+          <span id="pomoTotal" style="font-size:13px;color:var(--muted)">Toplam: 0 dk</span>
+        </div>
+        <div id="pomoDisplay" class="timer-display">25:00</div>
+        <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+          <button class="btn-primary" onclick="startPomo()">Başlat</button>
+          <button onclick="pausePomo()">Duraklat</button>
+          <button onclick="resetPomo()">Sıfırla</button>
+          <button onclick="logPomo()">+25 dk Kaydet</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">RSVP Hızlı Okuma Antrenmanı</h2>
+          <span id="wpmLabel" style="font-weight:700;color:var(--primary)">300 WPM</span>
+        </div>
+        <input id="wpmSlider" type="range" min="150" max="600" step="25" value="300" style="width:100%" oninput="updateWpm(this.value)">
+        <div id="rsvpStage" class="rsvp-stage">Hazır</div>
+        <textarea id="rsvpText" rows="3" style="width:100%;margin-bottom:10px">Paragraf sorularında ana düşünceyi hızlı yakalamak için göz sıçramalarını azaltmak ve kelime gruplarını tek bakışta kavramak gerekir.</textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-primary" onclick="startRsvp()">Başlat</button>
+          <button onclick="pauseRsvp()">Duraklat</button>
+          <button onclick="resetRsvp()">Sıfırla</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-4" class="tab-panel">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Haftalık Veli Raporu</h2>
+          <button class="btn-primary btn-sm" onclick="copyReport()">Tek Tıkla Kopyala</button>
+        </div>
+        <textarea id="parentReport" rows="12" style="width:100%;background:#f8fafc" readonly></textarea>
+        <p id="copyStatus" style="font-size:12px;color:var(--success);margin-top:6px"></p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2 class="card-title">Koç – Öğrenci Mesajlaşma</h2></div>
+        <div id="chatBox" class="chat-box"></div>
+        <form class="form-row" onsubmit="sendMessage(event)">
+          <input id="chatInput" placeholder="Mesajınızı yazın..." required>
+          <button class="btn-primary" type="submit" style="flex:0">Gönder</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="studentModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="card-head">
+      <h2 class="card-title">Yeni Öğrenci Ekle</h2>
+      <button class="btn-sm" onclick="closeStudentModal()">X</button>
+    </div>
+    <form onsubmit="addStudent(event)" style="display:flex;flex-direction:column;gap:10px">
+      <input id="newStudentName" placeholder="Ad Soyad" required>
+      <input id="newStudentGoal" placeholder="Alan / Hedef (örn. Sayısal - İlk 10K)" required>
+      <select id="newStudentRisk">
+        <option value="Normal">Normal</option>
+        <option value="Orta Risk">Orta Risk</option>
+        <option value="Yüksek Risk">Yüksek Risk</option>
+      </select>
+      <button class="btn-primary" type="submit">Öğrenciyi Ekle</button>
+    </form>
+  </div>
 </div>
 
 <script>
-const STORAGE_KEY = 'adimplan_yks_mvp_v1';
-const DAYS = ['Tümü', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
-
-const defaultState = {
-  role: 'coach',
-  selectedDay: 'Tümü',
-  activeStudents: 18,
-  lastNet: 84.5,
-  focusMinutes: 125,
-  tasks: [
-    { id: 1, day: 'Pzt', title: 'TYT Türkçe Paragraf (30 Soru Süreli)', done: true },
-    { id: 2, day: 'Pzt', title: 'TYT Matematik Problemler Tekrar + 25 Soru', done: false },
-    { id: 3, day: 'Sal', title: 'TYT Fizik Optik Konu Özeti & Video', done: false },
-    { id: 4, day: 'Çar', title: 'AYT Matematik Türev Karma Test', done: true },
-    { id: 5, day: 'Per', title: 'TYT Kimya Mol Kavramı Soru Çözümü', done: false },
-    { id: 6, day: 'Cum', title: 'Genel TYT Deneme Sınavı + Analiz', done: false }
-  ],
-  topics: [
-    { name: 'TYT Türkçe - Paragraf', d: 26, y: 3, b: 1, mastery: 84 },
-    { name: 'AYT Matematik - Türev', d: 11, y: 2, b: 2, mastery: 70 },
-    { name: 'TYT Matematik - Problemler', d: 9, y: 4, b: 2, mastery: 53 },
-    { name: 'TYT Fizik - Optik', d: 4, y: 3, b: 3, mastery: 33 }
-  ],
-  advice: 'TYT Fizik - Optik konusunda hakimiyet %33 ile kritik bölgede. Hemen 2 Pomodoro bloğunu temel soru çözümüne ayırın.'
+const STORAGE_KEY = 'adimplan_v2_state';
+const DAYS = ['Tümü','Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+const defaultData = {
+  activeId: 'zeynep',
+  role: 'Koç',
+  students: [
+    {
+      id: 'zeynep', name: 'Zeynep Kaya', goal: 'Sayısal - İlk 15K', risk: 'Normal', pomoMins: 125,
+      tasks: [
+        {id:1, title:'TYT Matematik - Problemler 40 Soru', day:'Pzt', meta:'60 dk', done:true},
+        {id:2, title:'AYT Fizik - Optik Tekrar', day:'Sal', meta:'45 dk', done:false},
+        {id:3, title:'Paragraf Hızlı Okuma & 25 Soru', day:'Çar', meta:'35 dk', done:false}
+      ],
+      exams: [
+        {name:'TYT Deneme 1', date:'2026-10-12', net:74.5},
+        {name:'TYT Deneme 2', date:'2026-10-26', net:79.25},
+        {name:'TYT Deneme 3', date:'2026-11-10', net:84.5}
+      ],
+      topics: [
+        {topic:'Matematik - Problemler', pct:82},
+        {topic:'Fizik - Optik', pct:44},
+        {topic:'Kimya - Mol Kavramı', pct:68},
+        {topic:'Türkçe - Paragraf', pct:91}
+      ],
+      cards: [
+        {id:1, box:1, topic:'Fizik - Optik', front:'Çukur aynada odak ile tepe noktası arasındaki cismin görüntüsü nasıldır?', back:'Sanal, düz ve cisimden büyük (aynanın arkasında).'},
+        {id:2, box:2, topic:'Matematik - Logaritma', front:'log_a(b) tanımlı olması için şartlar nelerdir?', back:'a > 0, a != 1 ve b > 0 olmalıdır.'}
+      ],
+      messages: [
+        {sender:'Koç', text:'Zeynep bu hafta Optik konusunu Kutu 1 kartlarıyla pekiştirelim.', time:'09:30'},
+        {sender:'Öğrenci', text:'Tamam hocam, akşam 2 Pomodoro Optik çalışacağım.', time:'10:15'}
+      ]
+    },
+    {
+      id: 'mert', name: 'Mert Aydın', goal: 'EA - İlk 20K', risk: 'Orta Risk', pomoMins: 75,
+      tasks: [
+        {id:1, title:'TYT Türkçe - Dil Bilgisi Kampı', day:'Pzt', meta:'50 dk', done:false},
+        {id:2, title:'AYT Edebiyat - Divan Şiiri', day:'Per', meta:'40 dk', done:true}
+      ],
+      exams: [
+        {name:'EA Deneme 1', date:'2026-10-18', net:61.0},
+        {name:'EA Deneme 2', date:'2026-11-05', net:64.5}
+      ],
+      topics: [
+        {topic:'Matematik - Fonksiyonlar', pct:48},
+        {topic:'Edebiyat - Divan', pct:77},
+        {topic:'Tarih - Osmanlı', pct:63}
+      ],
+      cards: [
+        {id:1, box:1, topic:'Matematik - Fonksiyon', front:'Birebir ve örten fonksiyonun tersi var mıdır?', back:'Evet, yalnızca birebir ve örten (bijektif) fonksiyonların tersi vardır.'}
+      ],
+      messages: [
+        {sender:'Koç', text:'Mert deneme netin yükseliyor, Fonksiyonlar konusuna ağırlık verelim.', time:'14:00'}
+      ]
+    }
+  ]
 };
 
-let state = loadState();
-let pomoSeconds = 1500;
-let pomoTimer = null;
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || defaultData;
+let activeDay = 'Tümü', activeBox = 0, showAnswer = false, cardIdx = 0;
+let pomoSec = 1500, pomoTimer = null, rsvpTimer = null, rsvpIdx = 0, wpm = 300;
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
-  return JSON.parse(JSON.stringify(defaultState));
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function cur(){ return state.students.find(s => s.id === state.activeId) || state.students[0]; }
+
+function renderAll(){
+  const sel = document.getElementById('studentSelect');
+  sel.innerHTML = state.students.map(s => `<option value="${s.id}" ${s.id===cur().id?'selected':''}>${s.name} (${s.goal})</option>`).join('');
+  sel.onchange = e => { state.activeId = e.target.value; cardIdx = 0; showAnswer = false; save(); renderAll(); };
+  const s = cur();
+  const badge = document.getElementById('riskBadge');
+  badge.textContent = s.risk;
+  badge.className = 'risk-badge ' + (s.risk==='Normal'?'risk-Normal':s.risk==='Orta Risk'?'risk-Orta':'risk-Yuksek');
+  document.getElementById('roleKoc').classList.toggle('active', state.role==='Koç');
+  document.getElementById('roleOgr').classList.toggle('active', state.role==='Öğrenci');
+  renderProgram(); renderExams(); renderLeitner(); renderPomo(); renderReport(); renderChat();
 }
 
-function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+function setRole(r){ state.role = r; save(); renderAll(); }
+function switchTab(i){
+  document.querySelectorAll('.tab-btn').forEach((b,idx)=>b.classList.toggle('active', idx===i));
+  document.querySelectorAll('.tab-panel').forEach((p,idx)=>p.classList.toggle('active', idx===i));
 }
 
-function setRole(role) {
-  state.role = role;
-  saveState();
-  render();
-}
-
-function filterDay(day) {
-  state.selectedDay = day;
-  saveState();
-  renderTasks();
-  renderDays();
-}
-
-function addTask(e) {
+function openStudentModal(){ document.getElementById('studentModal').classList.add('open'); }
+function closeStudentModal(){ document.getElementById('studentModal').classList.remove('open'); }
+function addStudent(e){
   e.preventDefault();
-  const day = document.getElementById('taskDay').value;
-  const input = document.getElementById('taskTitle');
-  const title = input.value.trim();
-  if (!title) return;
-  state.tasks.push({ id: Date.now(), day, title, done: false });
-  input.value = '';
-  saveState();
-  render();
+  const name = document.getElementById('newStudentName').value.trim();
+  const goal = document.getElementById('newStudentGoal').value.trim();
+  const risk = document.getElementById('newStudentRisk').value;
+  const id = 'stu_' + Date.now();
+  state.students.push({id, name, goal, risk, pomoMins:0, tasks:[], exams:[], topics:[], cards:[], messages:[]});
+  state.activeId = id;
+  save(); closeStudentModal(); e.target.reset(); renderAll();
 }
 
-function toggleTask(id) {
-  const t = state.tasks.find(x => x.id === id);
-  if (t) t.done = !t.done;
-  saveState();
-  render();
-}
+function setRisk(r){ cur().risk = r; save(); renderAll(); }
 
-function moveTaskUp(id) {
-  const idx = state.tasks.findIndex(x => x.id === id);
-  if (idx <= 0) return;
-  let targetIdx = idx - 1;
-  if (state.selectedDay !== 'Tümü') {
-    targetIdx = -1;
-    for (let i = idx - 1; i >= 0; i--) {
-      if (state.tasks[i].day === state.selectedDay) { targetIdx = i; break; }
-    }
-    if (targetIdx === -1) return;
-  }
-  const tmp = state.tasks[targetIdx];
-  state.tasks[targetIdx] = state.tasks[idx];
-  state.tasks[idx] = tmp;
-  saveState();
-  renderTasks();
-}
-
-function deleteTask(id) {
-  state.tasks = state.tasks.filter(x => x.id !== id);
-  saveState();
-  render();
-}
-
-function submitTrial(e) {
-  e.preventDefault();
-  const name = document.getElementById('trialTopic').value.trim();
-  const d = parseInt(document.getElementById('trialD').value, 10) || 0;
-  const y = parseInt(document.getElementById('trialY').value, 10) || 0;
-  const b = parseInt(document.getElementById('trialB').value, 10) || 0;
-  const total = d + y + b;
-  if (!name || total <= 0) return;
-
-  const net = +(d - y * 0.25).toFixed(2);
-  const mastery = Math.max(0, Math.min(100, Math.round((net / total) * 100)));
-
-  const existing = state.topics.find(t => t.name.toLowerCase() === name.toLowerCase());
-  if (existing) {
-    existing.d = d; existing.y = y; existing.b = b; existing.mastery = mastery;
-  } else {
-    state.topics.unshift({ name, d, y, b, mastery });
-  }
-
-  state.lastNet = +(Math.max(0, 75 + (net * 0.6))).toFixed(2);
-  const weakest = [...state.topics].sort((a, b) => a.mastery - b.mastery)[0];
-
-  if (mastery < 50) {
-    state.advice = `${name} (%${mastery} hakimiyet, ${net} net) kritik seviyede! Yanlış analizi yapıp bu hafta en az 2 Pomodoro tekrar ekleyin.`;
-  } else if (mastery < 75) {
-    state.advice = `${name} (%${mastery} hakimiyet) gelişim aşamasında. Hızlanmak için süreli test çözün. En zayıf konu: ${weakest.name} (%${weakest.mastery}).`;
-  } else {
-    state.advice = `Harika! ${name} (%${mastery} hakimiyet) güçlü bölgede. Şimdi odağı en zayıf konunuz olan ${weakest.name} (%${weakest.mastery}) üzerine kaydırın.`;
-  }
-
-  e.target.reset();
-  saveState();
-  render();
-}
-
-function renderPomo() {
-  const m = String(Math.floor(pomoSeconds / 60)).padStart(2, '0');
-  const s = String(pomoSeconds % 60).padStart(2, '0');
-  document.getElementById('pomoDisplay').textContent = `${m}:${s}`;
-}
-
-function startPomo() {
-  if (pomoTimer) return;
-  pomoTimer = setInterval(() => {
-    if (pomoSeconds > 0) {
-      pomoSeconds--;
-      renderPomo();
-    } else {
-      pausePomo();
-      logPomo25();
-      resetPomo();
-    }
-  }, 1000);
-}
-
-function pausePomo() {
-  clearInterval(pomoTimer);
-  pomoTimer = null;
-}
-
-function resetPomo() {
-  pausePomo();
-  pomoSeconds = 1500;
-  renderPomo();
-}
-
-function logPomo25() {
-  state.focusMinutes += 25;
-  saveState();
-  renderKPIs();
-}
-
-function renderKPIs() {
-  const isCoach = state.role === 'coach';
-  document.getElementById('kpiStudents').textContent = isCoach ? state.activeStudents : '1';
-  document.getElementById('kpiStudentsSub').textContent = isCoach ? 'Koçluk portföyü aktif' : 'Bireysel öğrenci görünümü';
-
-  const total = state.tasks.length;
-  const done = state.tasks.filter(t => t.done).length;
-  const pct = total ? Math.round((done / total) * 100) : 0;
-  document.getElementById('kpiCompletion').textContent = `%${pct}`;
-  document.getElementById('kpiCompletionSub').textContent = `${done} / ${total} görev tamamlandı`;
-
-  document.getElementById('kpiNet').textContent = Number(state.lastNet).toFixed(2);
-  document.getElementById('kpiFocus').textContent = `${state.focusMinutes} dk`;
-}
-
-function renderDays() {
-  const container = document.getElementById('dayFilters');
-  container.innerHTML = DAYS.map(d =>
-    `<button class="day-btn ${state.selectedDay === d ? 'active' : ''}" onclick="filterDay('${d}')">${d}</button>`
+function renderProgram(){
+  const s = cur();
+  document.getElementById('dayFilters').innerHTML = DAYS.map(d =>
+    `<button class="day-btn ${activeDay===d?'active':''}" onclick="activeDay='${d}';renderProgram()">${d}</button>`
   ).join('');
-}
-
-function renderTasks() {
-  const isCoach = state.role === 'coach';
-  document.getElementById('taskForm').classList.toggle('hidden', !isCoach);
-  document.getElementById('scheduleModeBadge').textContent = isCoach ? 'Koç Düzenleme Modu' : 'Öğrenci Takip Modu';
-
-  const list = document.getElementById('taskList');
-  const filtered = state.selectedDay === 'Tümü'
-    ? state.tasks
-    : state.tasks.filter(t => t.day === state.selectedDay);
-
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty">Seçili gün için görev bulunmuyor.</div>';
-    return;
-  }
-
-  list.innerHTML = filtered.map(t => `
-    <div class="task-item ${t.done ? 'done' : ''}">
+  const list = s.tasks.filter(t => activeDay==='Tümü' || t.day===activeDay);
+  document.getElementById('taskList').innerHTML = list.length ? list.map(t => {
+    const idx = s.tasks.indexOf(t);
+    return `<div class="task-item ${t.done?'done':''}">
       <div class="task-left">
-        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${t.id})">
-        <span class="task-day">${t.day}</span>
-        <span class="task-text">${escapeHtml(t.title)}</span>
+        <input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${idx})">
+        <div><div class="task-title">${t.title}</div><div class="task-meta">${t.day} ${t.meta?'• '+t.meta:''}</div></div>
       </div>
-      ${isCoach ? `
-      <div class="task-actions">
-        <button class="btn btn-ghost btn-sm" title="Yukarı taşı" onclick="moveTaskUp(${t.id})">&#8593;</button>
-        <button class="btn btn-danger btn-sm" title="Sil" onclick="deleteTask(${t.id})">Sil</button>
-      </div>` : ''}
-    </div>
-  `).join('');
+      <div class="task-actions no-print">
+        <button class="btn-sm" onclick="moveTask(${idx},-1)" title="Yukarı Taşı">▲</button>
+        <button class="btn-sm btn-danger" onclick="delTask(${idx})" title="Sil">Sil</button>
+      </div>
+    </div>`;
+  }).join('') : '<p style="color:var(--muted);font-size:14px">Bu gün için görev yok.</p>';
+
+  const total = s.tasks.length, done = s.tasks.filter(t=>t.done).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  const weak = [...s.topics].sort((a,b)=>a.pct-b.pct)[0];
+  const box1 = s.cards.filter(c=>c.box===1).length;
+  let advice = `<strong>${s.name}</strong> için haftalık görev tamamlama oranı <strong>%${pct}</strong> (${done}/${total}). `;
+  if(s.risk === 'Yüksek Risk') advice += 'Acil müdahale: Günlük hedefleri %30 sadeleştirip kısa 25 dk Pomodoro bloklarına geçin. ';
+  else if(s.risk === 'Orta Risk') advice += 'Dikkat: Program takibinde aksamalar var, akşam kontrolü ekleyin. ';
+  else advice += 'İstikrarlı ilerleyiş sürüyor. ';
+  if(weak) advice += `En zayıf konu <strong>${weak.topic} (%${weak.pct})</strong>; bu hafta ekstra tekrar önerilir. `;
+  if(box1 > 0) advice += `Leitner Kutu 1'de bekleyen <strong>${box1} yanlış kartı</strong> bugün tekrar edilmeli.`;
+  document.getElementById('aiAdvice').innerHTML = advice;
 }
 
-function renderHeatmap() {
-  const list = document.getElementById('heatmapList');
-  const sorted = [...state.topics].sort((a, b) => a.mastery - b.mastery);
-  list.innerHTML = sorted.map(t => {
-    const cls = t.mastery < 50 ? 'fill-red' : (t.mastery < 75 ? 'fill-yellow' : 'fill-green');
-    return `
-      <div class="heat-item">
-        <div class="heat-meta">
-          <span>${escapeHtml(t.name)}</span>
-          <span>%${t.mastery} (${t.d}D ${t.y}Y ${t.b}B)</span>
-        </div>
-        <div class="bar-track">
-          <div class="bar-fill ${cls}" style="width:${t.mastery}%"></div>
-        </div>
-      </div>
+function addTask(e){
+  e.preventDefault();
+  cur().tasks.push({
+    id: Date.now(),
+    title: document.getElementById('taskTitle').value.trim(),
+    day: document.getElementById('taskDay').value,
+    meta: document.getElementById('taskMeta').value.trim(),
+    done: false
+  });
+  e.target.reset(); save(); renderAll();
+}
+function toggleTask(i){ cur().tasks[i].done = !cur().tasks[i].done; save(); renderAll(); }
+function delTask(i){ cur().tasks.splice(i,1); save(); renderAll(); }
+function moveTask(i, dir){
+  const t = cur().tasks; const j = i + dir;
+  if(j < 0 || j >= t.length) return;
+  [t[i], t[j]] = [t[j], t[i]]; save(); renderProgram();
+}
+
+function renderExams(){
+  const s = cur(), svg = document.getElementById('trendChart');
+  const ex = s.exams;
+  if(!ex.length){ svg.innerHTML = '<text x="260" y="105" text-anchor="middle" fill="#64748b" font-size="14">Henüz deneme verisi yok</text>'; }
+  else {
+    const maxN = Math.max(...ex.map(e=>e.net), 100), minN = Math.min(...ex.map(e=>e.net), 0);
+    const padX = 45, padY = 28, w = 520 - padX*2, h = 210 - padY*2;
+    const pts = ex.map((e,i) => {
+      const x = ex.length===1 ? padX + w/2 : padX + (i/(ex.length-1))*w;
+      const y = padY + h - ((e.net - minN)/(maxN - minN || 1))*h;
+      return {x, y, e};
+    });
+    const poly = pts.map(p=>`${p.x},${p.y}`).join(' ');
+    svg.innerHTML = `
+      <line x1="${padX}" y1="${padY}" x2="${padX}" y2="${padY+h}" stroke="#cbd5e1"/>
+      <line x1="${padX}" y1="${padY+h}" x2="${padX+w}" y2="${padY+h}" stroke="#cbd5e1"/>
+      <polyline fill="none" stroke="#2563eb" stroke-width="3" points="${poly}"/>
+      ${pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="5" fill="#2563eb"/>
+        <text x="${p.x}" y="${p.y-10}" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">${p.e.net}</text>
+        <text x="${p.x}" y="${padY+h+16}" text-anchor="middle" font-size="10" fill="#64748b">${p.e.name.slice(0,12)}</text>`).join('')}
     `;
-  }).join('');
+  }
+  document.getElementById('heatmapGrid').innerHTML = s.topics.length ? s.topics.map(t => {
+    const cls = t.pct >= 75 ? 'hm-good' : t.pct >= 50 ? 'hm-mid' : 'hm-weak';
+    return `<div class="hm-cell ${cls}"><strong>${t.topic}</strong><div style="font-size:18px;font-weight:800;margin-top:4px">%${t.pct}</div></div>`;
+  }).join('') : '<p style="color:var(--muted)">Konu verisi yok.</p>';
 }
 
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+function addExam(e){
+  e.preventDefault();
+  const s = cur();
+  s.exams.push({
+    name: document.getElementById('examName').value.trim(),
+    date: document.getElementById('examDate').value,
+    net: parseFloat(document.getElementById('examNet').value)
+  });
+  const topic = document.getElementById('examTopic').value.trim();
+  const pct = parseInt(document.getElementById('examMastery').value, 10);
+  const existing = s.topics.find(t => t.topic.toLowerCase() === topic.toLowerCase());
+  if(existing) existing.pct = pct; else s.topics.push({topic, pct});
+  e.target.reset(); save(); renderAll();
 }
 
-function render() {
-  document.getElementById('btnCoach').classList.toggle('active', state.role === 'coach');
-  document.getElementById('btnStudent').classList.toggle('active', state.role === 'student');
-  document.getElementById('adviceText').textContent = state.advice;
-  renderKPIs();
-  renderDays();
-  renderTasks();
-  renderHeatmap();
-  renderPomo();
+function renderLeitner(){
+  const s = cur();
+  document.getElementById('leitnerFilters').innerHTML = [0,1,2,3,4,5].map(b =>
+    `<button class="day-btn ${activeBox===b?'active':''}" onclick="activeBox=${b};cardIdx=0;showAnswer=false;renderLeitner()">${b===0?'Tümü':'Kutu '+b}</button>`
+  ).join('');
+  const cards = s.cards.filter(c => activeBox===0 || c.box===activeBox);
+  const stage = document.getElementById('leitnerStage');
+  if(!cards.length){ stage.innerHTML = '<p style="color:var(--muted)">Bu kutuda kart bulunmuyor.</p>'; return; }
+  if(cardIdx >= cards.length) cardIdx = 0;
+  const c = cards[cardIdx];
+  stage.innerHTML = `<div class="leitner-box">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px">
+      <span><strong>Kutu ${c.box}</strong> • ${c.topic}</span>
+      <span>Kart ${cardIdx+1} / ${cards.length}</span>
+    </div>
+    <div style="font-size:16px;font-weight:600;margin-bottom:12px">${c.front}</div>
+    ${showAnswer ? `<div style="padding:10px;background:#dcfce7;border-radius:8px;margin-bottom:12px;font-size:14px"><strong>Çözüm:</strong> ${c.back}</div>` : ''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button onclick="showAnswer=!showAnswer;renderLeitner()">${showAnswer?'Cevabı Gizle':'Cevabı Göster'}</button>
+      <button class="btn-primary" onclick="rateCard(${c.id},1)">Biliyorum (+1 Kutu)</button>
+      <button class="btn-danger" onclick="rateCard(${c.id},0)">Tekrar Et (Kutu 1)</button>
+    </div>
+  </div>`;
+}
+function rateCard(id, ok){
+  const c = cur().cards.find(x=>x.id===id);
+  if(c) c.box = ok ? Math.min(5, c.box+1) : 1;
+  showAnswer = false; cardIdx++; save(); renderAll();
+}
+function addCard(e){
+  e.preventDefault();
+  cur().cards.push({
+    id: Date.now(), box: 1,
+    topic: document.getElementById('cardTopic').value.trim(),
+    front: document.getElementById('cardFront').value.trim(),
+    back: document.getElementById('cardBack').value.trim()
+  });
+  e.target.reset(); save(); renderAll();
 }
 
-render();
+function renderPomo(){
+  const m = String(Math.floor(pomoSec/60)).padStart(2,'0'), sec = String(pomoSec%60).padStart(2,'0');
+  document.getElementById('pomoDisplay').textContent = `${m}:${sec}`;
+  document.getElementById('pomoTotal').textContent = `Toplam: ${cur().pomoMins} dk`;
+}
+function startPomo(){
+  if(pomoTimer) return;
+  pomoTimer = setInterval(()=>{ if(pomoSec>0){pomoSec--;renderPomo();} else {pausePomo();logPomo();} }, 1000);
+}
+function pausePomo(){ clearInterval(pomoTimer); pomoTimer = null; }
+function resetPomo(){ pausePomo(); pomoSec = 1500; renderPomo(); }
+function logPomo(){ cur().pomoMins += 25; save(); renderAll(); }
+
+function updateWpm(v){
+  wpm = parseInt(v,10);
+  document.getElementById('wpmLabel').textContent = wpm + ' WPM';
+  if(rsvpTimer){ pauseRsvp(); startRsvp(); }
+}
+function startRsvp(){
+  if(rsvpTimer) return;
+  const words = document.getElementById('rsvpText').value.trim().split(/\s+/);
+  if(!words.length) return;
+  rsvpTimer = setInterval(()=>{
+    if(rsvpIdx >= words.length){ pauseRsvp(); rsvpIdx = 0; return; }
+    document.getElementById('rsvpStage').textContent = words[rsvpIdx++];
+  }, Math.round(60000/wpm));
+}
+function pauseRsvp(){ clearInterval(rsvpTimer); rsvpTimer = null; }
+function resetRsvp(){ pauseRsvp(); rsvpIdx = 0; document.getElementById('rsvpStage').textContent = 'Hazır'; }
+
+function renderReport(){
+  const s = cur();
+  const done = s.tasks.filter(t=>t.done).length, total = s.tasks.length;
+  const lastExam = s.exams[s.exams.length-1];
+  const weak = [...s.topics].sort((a,b)=>a.pct-b.pct)[0];
+  document.getElementById('parentReport').value =
+`AdımPlan Haftalık Veli Raporu
+Öğrenci: ${s.name} (${s.goal})
+Risk Durumu: ${s.risk}
+Haftalık Görev Tamamlama: ${done}/${total} (%${total?Math.round(done/total*100):0})
+Toplam Pomodoro Odak Süresi: ${s.pomoMins} dk
+Son Deneme Neti: ${lastExam ? lastExam.name + ' - ' + lastExam.net + ' net' : 'Henüz girilmedi'}
+Öncelikli Destek Konusu: ${weak ? weak.topic + ' (%' + weak.pct + ')' : 'Belirlenmedi'}
+Yanlış Kasası Kutu 1 Kart Sayısı: ${s.cards.filter(c=>c.box===1).length} adet`;
+}
+function copyReport(){
+  navigator.clipboard.writeText(document.getElementById('parentReport').value);
+  document.getElementById('copyStatus').textContent = 'Rapor panoya kopyalandı!';
+  setTimeout(()=>document.getElementById('copyStatus').textContent='', 2500);
+}
+
+function renderChat(){
+  const box = document.getElementById('chatBox');
+  box.innerHTML = cur().messages.map(m =>
+    `<div class="msg ${m.sender==='Koç'?'msg-Koc':'msg-Ogrenci'}"><strong>${m.sender}</strong> <span style="font-size:11px;color:var(--muted)">${m.time}</span><div>${m.text}</div></div>`
+  ).join('');
+  box.scrollTop = box.scrollHeight;
+}
+function sendMessage(e){
+  e.preventDefault();
+  const input = document.getElementById('chatInput');
+  const now = new Date();
+  const time = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  cur().messages.push({sender: state.role, text: input.value.trim(), time});
+  input.value = ''; save(); renderChat();
+}
+
+renderAll();
 </script>
 </body>
 </html>
